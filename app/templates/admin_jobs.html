@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>All Jobs</h2>
+<hr>
+
+{% for job in jobs %}
+<div class="card mb-3">
+    <div class="card-body">
+
+        <h4>{{ job.title }}</h4>
+
+        <p><b>Industry:</b> {{ job.industry }}</p>
+
+        <p>{{ job.description }}</p>
+
+        <form action="{{ url_for('delete_job', job_id=job.id) }}" method="POST">
+            <button type="submit" class="btn btn-danger">
+                Delete Job
+            </button>
+        </form>
+
+    </div>
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

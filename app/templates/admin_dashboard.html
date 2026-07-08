@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2>Admin Dashboard</h2>
+    <hr>
+
+    <div class="list-group">
+
+        <a href="{{ url_for('post_jobs') }}" class="list-group-item list-group-item-action">
+            ➕ Add New Job
+        </a>
+
+        <a href="{{ url_for('admin_jobs') }}" class="list-group-item list-group-item-action">
+            📋 View All Jobs
+        </a>
+
+        <a href="{{ url_for('admin_logout') }}" class="btn btn-danger">
+                Logout
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
