@@ -172,25 +172,23 @@ def post_jobs():
 
     if form.validate_on_submit():
 
-        admin = User.query.filter_by(email="admin@gmail.com").first()
+    admin = User.query.filter_by(email="admin@gmail.com").first()
 
-        job = Jobs(
-            title=form.title.data,
-            industry=form.industry.data,
-            description=form.description.data,
-            job_applier=admin
-        )
+if admin is None:
+    flash("Admin user not found in database.", "danger")
+    return redirect(url_for("admin_dashboard"))
 
-        db.session.add(job)
-        db.session.commit()
+job = Jobs(
+    title=form.title.data,
+    industry=form.industry.data,
+    description=form.description.data,
+    user_id=admin.id
+)
+    db.session.add(job)
+    db.session.commit()
 
-        flash("Job added successfully!", "success")
-        return redirect(url_for("admin_dashboard"))
-
-    return render_template(
-        "post_jobs.html",
-        form=form,
-        Random_Review=get_random_reviews()
+    flash("Job added successfully!", "success")
+    return redirect(url_for("admin_dashboard"))
     )
 
 @app.route("/review", methods=['GET', 'POST'])
