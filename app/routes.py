@@ -165,19 +165,11 @@ def post_cvs(jobid):
     return render_template('post_cvs.html', form=form, Random_Review=get_random_reviews())
 @app.route("/post_jobs", methods=["GET", "POST"])
 def post_jobs():
-    form = JobForm()
 
     if "admin" not in session:
         return redirect(url_for("admin"))
 
-    admin = User.query.filter_by(email="admin@gmail.com").first()
-
-    print("ADMIN =", admin)
-
-    if admin:
-        print("Admin ID =", admin.id)
-    else:
-        print("Admin NOT FOUND")
+    form = JobForm()
 
     if form.validate_on_submit():
 
@@ -185,7 +177,7 @@ def post_jobs():
             title=form.title.data,
             industry=form.industry.data,
             description=form.description.data,
-            job_applier=admin
+            user_id=1   # temporary admin owner
         )
 
         db.session.add(job)
@@ -204,6 +196,7 @@ def post_jobs():
 @login_required
 def review():
     form = ReviewForm()
+    print(User.query.all())
     if form.validate_on_submit():
         review = Review(username=form.username.data,
                             review=form.review.data)
