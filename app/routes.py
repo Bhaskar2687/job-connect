@@ -167,28 +167,34 @@ def post_cvs(jobid):
 @app.route("/post_jobs", methods=['GET', 'POST'])
 def post_jobs():
     form = JobForm()
+
     if "admin" not in session:
         return redirect(url_for("admin"))
 
     if form.validate_on_submit():
 
-    admin = User.query.filter_by(email="admin@gmail.com").first()
+        admin = User.query.filter_by(email="admin@gmail.com").first()
 
-if admin is None:
-    flash("Admin user not found in database.", "danger")
-    return redirect(url_for("admin_dashboard"))
+        if admin is None:
+            return "ERROR: admin@gmail.com not found in Render database"
 
-job = Jobs(
-    title=form.title.data,
-    industry=form.industry.data,
-    description=form.description.data,
-    user_id=admin.id
-)
-    db.session.add(job)
-    db.session.commit()
+        job = Jobs(
+            title=form.title.data,
+            industry=form.industry.data,
+            description=form.description.data,
+            user_id=admin.id
+        )
 
-    flash("Job added successfully!", "success")
-    return redirect(url_for("admin_dashboard"))
+        db.session.add(job)
+        db.session.commit()
+
+        flash("Job added successfully!", "success")
+        return redirect(url_for("admin_dashboard"))
+
+    return render_template(
+        "post_jobs.html",
+        form=form,
+        Random_Review=get_random_reviews()
     )
 
 @app.route("/review", methods=['GET', 'POST'])
