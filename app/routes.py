@@ -23,12 +23,13 @@ rev = [
     }
 ]
 
+def get_random_reviews():
+    review_obj = Review.query.all()
 
-Review_Obj = Review.query.all()
-if len(Review_Obj) < 3:
-    Random_Review = rev
-else:
-    Random_Review = random.sample(Review_Obj, 3)
+    if len(review_obj) < 3:
+        return rev
+
+    return random.sample(review_obj, 3)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -46,7 +47,7 @@ def register():
         db.session.commit()
         flash('You account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', form=form, Random_Review=Random_Review)
+    return render_template('register.html', form=form, Random_Review=get_random_reviews())
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -73,8 +74,8 @@ def login():
                 flash('Login Unsuccessful. Please check email, password and usertype', 'danger')
         else:
             flash('Login Unsuccessful. Please check email, password and usertype', 'danger')
-            return render_template('login.html', form=form, Random_Review=Random_Review)
-    return render_template('login.html', form=form, Random_Review=Random_Review)
+            return render_template('login.html', form=form, Random_Review=get_random_reviews())
+    return render_template('login.html', form=form, Random_Review=get_random_reviews())
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
 
@@ -89,7 +90,7 @@ def admin():
 
         flash("Invalid Admin Credentials", "danger")
 
-    return render_template("admin_login.html", Random_Review=Random_Review)
+    return render_template("admin_login.html", Random_Review=get_random_reviews())
 
 @app.route("/admin/jobs")
 def admin_jobs():
@@ -97,7 +98,7 @@ def admin_jobs():
     return render_template(
         "admin_jobs.html",
         jobs=jobs,
-        Random_Review=Random_Review
+        Random_Review=get_random_reviews()
     )
 @app.route("/admin_logout")
 def admin_logout():
@@ -126,7 +127,7 @@ def admin_dashboard():
     if "admin" not in session:
         return redirect(url_for("admin"))
     jobs = Jobs.query.all()
-    return render_template("admin_dashboard.html", Random_Review=Random_Review)
+    return render_template("admin_dashboard.html", Random_Review=get_random_reviews())
 
 
 @app.route("/logout")
@@ -161,7 +162,7 @@ def post_cvs(jobid):
         db.session.add(application)
         db.session.commit()
         return redirect(url_for('show_jobs'))
-    return render_template('post_cvs.html', form=form, Random_Review=Random_Review)
+    return render_template('post_cvs.html', form=form, Random_Review=get_random_reviews())
 
 @app.route("/post_jobs", methods=['GET', 'POST'])
 def post_jobs():
@@ -189,7 +190,7 @@ def post_jobs():
     return render_template(
         "post_jobs.html",
         form=form,
-        Random_Review=Random_Review
+        Random_Review=get_random_reviews()
     )
 
 @app.route("/review", methods=['GET', 'POST'])
@@ -203,7 +204,7 @@ def review():
         db.session.commit()
         flash('Thank you for providing the review!', 'success')
         return redirect(url_for('show_jobs'))
-    return  render_template('review.html', form=form, Random_Review=Random_Review)
+    return  render_template('review.html', form=form, Random_Review=get_random_reviews())
 
 @app.route("/posted_jobs")
 
@@ -212,30 +213,30 @@ def posted_jobs():
     return render_template(
         'show_jobs.html',
         jobs=jobs,
-        Random_Review=Random_Review
+        Random_Review=get_random_reviews()
     )
 
 @app.route("/show_applications/<jobid>", methods=['GET'])
 @login_required
 def show_applications(jobid):
     applications = Application.query.filter_by(job_id=jobid).order_by(Application.degree, Application.experience.desc()).all()
-    return render_template('show_applications.html', applications=applications, Random_Review=Random_Review)
+    return render_template('show_applications.html', applications=applications, Random_Review=get_random_reviews())
 
 @app.route("/meeting/<application_id>")
 @login_required
 def meeting(application_id):
     applicant_id = Application.query.get(int(application_id)).user_id
     applicant = User.query.get(applicant_id)
-    return render_template('meeting.html', applicant=applicant, Random_Review=Random_Review)
+    return render_template('meeting.html', applicant=applicant, Random_Review=get_random_reviews())
 
 @app.route("/")
 @app.route("/show_jobs")
 def show_jobs():
     jobs = Jobs.query.all()
-    return render_template('show_jobs.html', jobs=jobs, Random_Review=Random_Review)
+    return render_template('show_jobs.html', jobs=jobs, Random_Review=get_random_reviews())
 
 @app.route("/resume/<id>", methods=['GET'])
 def resume(id):
     cv = Application.query.get(int(id)).cv
-    return render_template('resume.html', cv=cv, Random_Review=Random_Review, id=id)
+    return render_template('resume.html', cv=cv, Random_Review=get_random_reviews(), id=id)
 
