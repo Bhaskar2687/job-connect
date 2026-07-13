@@ -134,6 +134,14 @@ class ApplicationForm(FlaskForm):
                                     ('Finance and Economic', 'Finance and Economic'),
                                     ('Advertising And Marketing', 'Advertising and Marketing'),
                                     ('Mining', 'Mining'),
+                                    ('Electronics and commnication', 'Electronics and commnication'),
+                                    ('civil', 'civil'),
+                                    ('mechanical', 'mechanical'),
+                                    ('chemical', 'chemical'),
+                                    ('aerospace', 'aerospace'),
+                                    ('Electrical', 'Electrical'),
+                                    ('Computer Science', 'Computer Science'),
+                                    
                                     ('Aerospace', 'Aerospace')],
                            validators=[DataRequired()])
     experience = IntegerField('Professional Experience in years',
