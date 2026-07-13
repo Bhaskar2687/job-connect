@@ -14,10 +14,8 @@
         </div>
         <div class="col-auto d-none d-lg-block">
           {% if current_user.usertype == 'Company' %}
-          <a href="/show_applications/{{job.id}}"  class="btn btn-primary mb-2" role="button" aria-disabled="true">Applications</a>
-          {% else %}
-          <a href="/post_cvs/{{job.id}}"  class="btn btn-primary mb-2" role="button" aria-disabled="true">Apply</a>
-          {% endif %}
+          <a href="/show_applications/{{job.id}}" class="btn btn-secondary mb-2" role="button" aria-disabled="true">Applications</a>          {% else %}
+          <a href="/post_cvs/{{job.id}}" class="btn btn-secondary mb-2" role="button" aria-disabled="true">Apply</a>          {% endif %}
         </div>
       </div>
     </div>
