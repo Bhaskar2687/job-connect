@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container text-center mt-5">
+
+    <h1 class="display-3 font-weight-bold">
+        Welcome to JobConnect
+    </h1>
+
+    <p class="lead mt-3">
+        Find your dream job with one click.
+    </p>
+
+    <br>
+
+    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg mr-3">
+        Login
+    </a>
+
+    <a href="{{ url_for('register') }}" class="btn btn-success btn-lg">
+        Sign Up
+    </a>
+
+</div>
+
+{% endblock %}

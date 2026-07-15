@@ -232,10 +232,28 @@ def meeting(application_id):
     return render_template('meeting.html', applicant=applicant, Random_Review=get_random_reviews())
 
 @app.route("/")
+def home():
+    if current_user.is_authenticated:
+        if current_user.usertype == "Job Seeker":
+            return redirect(url_for("show_jobs"))
+        elif current_user.usertype == "Company":
+            return redirect(url_for("posted_jobs"))
+
+    return render_template(
+        "landing.html",
+        Random_Review=get_random_reviews()
+    )
+
+
 @app.route("/show_jobs")
+@login_required
 def show_jobs():
     jobs = Jobs.query.all()
-    return render_template('show_jobs.html', jobs=jobs, Random_Review=get_random_reviews())
+    return render_template(
+        "show_jobs.html",
+        jobs=jobs,
+        Random_Review=get_random_reviews()
+    )
 
 @app.route("/resume/<id>", methods=['GET'])
 def resume(id):
