@@ -144,10 +144,22 @@ class ApplicationForm(FlaskForm):
                                     
                                     ('Aerospace', 'Aerospace')],
                            validators=[DataRequired()])
-    experience = IntegerField('Professional Experience in years',
-                              validators=[DataRequired()])
-    cv = FileField(
-    'Update Resume',
-    validators=[FileAllowed(['pdf', 'doc', 'docx'], 'Only PDF, DOC, or DOCX resumes are allowed!')]
+    experience = IntegerField(
+    'Professional Experience in years',
+    validators=[DataRequired()]
 )
-    submit = SubmitField('Submit')
+
+cv = FileField(
+    'Update Resume',
+    validators=[FileAllowed(
+        ['pdf', 'doc', 'docx'],
+        'Only PDF, DOC, or DOCX resumes are allowed!'
+    )]
+)
+
+cover_letter = TextAreaField(
+    'Cover Letter',
+    validators=[DataRequired()]
+)
+
+submit = SubmitField('Submit')
