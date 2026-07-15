@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4 text-center">
+        Job Applications
+    </h2>
+
+    <table class="table table-striped table-bordered">
+
+        <thead class="thead-dark">
+
+            <tr>
+                <th>Applicant</th>
+                <th>Job</th>
+                <th>Resume</th>
+                <th>Cover Letter</th>
+                <th>Experience</th>
+                <th>Applied On</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for application in applications %}
+
+        <tr>
+
+            <td>
+                {{ application.application_submiter.username }}
+            </td>
+
+            <td>
+                {{ application.application_jober.title }}
+            </td>
+
+            <td>
+
+               <td>
+    <a href="{{ url_for('resume', id=application.id) }}"
+       class="btn btn-success btn-sm">
+        📄 View Resume
+    </a>
+</td>
+
+            </td>
+
+            <td>
+
+                {{ application.cover_letter }}
+
+            </td>
+
+            <td>
+
+                {{ application.experience }} Years
+
+            </td>
+
+            <td>
+
+                {{ application.date_posted.strftime('%d %b %Y') }}
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

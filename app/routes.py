@@ -49,6 +49,24 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form, Random_Review=get_random_reviews())
 
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if username == "admin" and password == "admin123":
+            session["admin"] = True
+            return redirect(url_for("admin_dashboard"))
+
+        flash("Invalid Admin Credentials", "danger")
+
+    return render_template(
+        "admin_login.html",
+        Random_Review=get_random_reviews()
+    )
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -76,21 +94,6 @@ def login():
             flash('Login Unsuccessful. Please check email, password and usertype', 'danger')
             return render_template('login.html', form=form, Random_Review=get_random_reviews())
     return render_template('login.html', form=form, Random_Review=get_random_reviews())
-@app.route("/admin", methods=["GET", "POST"])
-def admin():
-
-    if request.method == "POST":
-
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if username == "admin" and password == "admin123":
-            session["admin"] = True
-            return redirect(url_for("admin_dashboard"))
-
-        flash("Invalid Admin Credentials", "danger")
-
-    return render_template("admin_login.html", Random_Review=get_random_reviews())
 
 @app.route("/admin/jobs")
 def admin_jobs():
@@ -135,13 +138,21 @@ def admin_dashboard():
 def logout():
     logout_user()
     return redirect(url_for('show_jobs'))
-
 def save_picture(form_picture):
     f_name, f_ext = os.path.splitext(form_picture.filename)
+
     picture_fn = f_name + f_ext
-    picture_path = os.path.join(app.root_path, 'static', picture_fn)
+
+    picture_path = os.path.join(
+        app.root_path,
+        'static',
+        'resumes',
+        picture_fn
+    )
+
     form_picture.save(picture_path)
-    return picture_fn
+
+    return "resumes/" + picture_fn
 
 @app.route("/post_cvs/<jobid>", methods=['GET', 'POST'])
 @login_required
@@ -149,16 +160,18 @@ def post_cvs(jobid):
     form = ApplicationForm()
     job = Jobs.query.filter_by(id=jobid).first()
     if form.validate_on_submit():
-        application = Application(gender=form.gender.data,
-                              degree=form.degree.data,
-                              industry=form.industry.data,
-                              experience=form.experience.data,
-                              cover_letter=form.cover_letter.data,
-                              application_submiter=current_user,
-                              application_jober=job,
-                              cv=form.cv.data.filename)
-        print(form.cv.data)
         picture_file = save_picture(form.cv.data)
+
+        application = Application(
+            gender=form.gender.data,
+            degree=form.degree.data,
+            industry=form.industry.data,
+            experience=form.experience.data,
+            cover_letter=form.cover_letter.data,
+            application_submiter=current_user,
+            application_jober=job,
+            cv=picture_file
+        )
         db.session.add(application)
         db.session.commit()
         flash("🎉 Your application has been submitted successfully!", "success")
@@ -243,8 +256,22 @@ def home():
         "landing.html",
         Random_Review=get_random_reviews()
     )
+@app.route('/admin/applications')
+def admin_applications():
 
+    if not session.get("admin"):
+        flash("Please login as Admin.", "danger")
+        return redirect(url_for("admin"))
 
+    applications = Application.query.order_by(
+        Application.date_posted.desc()
+    ).all()
+
+    return render_template(
+        "admin_applications.html",
+        applications=applications,
+        Random_Review=get_random_reviews()
+    )
 @app.route("/show_jobs")
 @login_required
 def show_jobs():
@@ -258,5 +285,11 @@ def show_jobs():
 @app.route("/resume/<id>", methods=['GET'])
 def resume(id):
     cv = Application.query.get(int(id)).cv
-    return render_template('resume.html', cv=cv, Random_Review=get_random_reviews(), id=id)
+    return render_template(
+        'resume.html',
+        cv=cv,
+        Random_Review=get_random_reviews(),
+        id=id
+    )
+
 

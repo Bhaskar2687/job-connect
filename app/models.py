@@ -20,21 +20,7 @@ class User(db.Model, UserMixin):
         return f"User('{self.id}', '{self.username}', '{self.usertype}', '{self.email}')"
 
 
-class Application(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    gender = db.Column(db.String(20), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=date.today())
-    degree = db.Column(db.String(20), nullable=False)
-    industry = db.Column(db.String(50), nullable=False)
-    experience = db.Column(db.Integer, nullable=False)
-    cv = db.Column(db.String(20), nullable=False)
-    cover_letter = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
-    job_id = db.Column(db.Integer, db.ForeignKey('jobs.id'), nullable=False)
 
-
-    def __repr__(self):
-        return f"Application('{self.id}','{self.gender}', '{self.date_posted}', '{self.degree}', '{self.industry}', '{self.experience}', '{self.user_id}', '{self.job_id}')"
 
 class Jobs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -58,3 +44,22 @@ class Review(db.Model):
 
     def __repr__(self):
         return f"Review('{self.username}', '{self.review}')"
+
+class Application(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    gender = db.Column(db.String(20), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=date.today())
+    degree = db.Column(db.String(20), nullable=False)
+    industry = db.Column(db.String(50), nullable=False)
+    experience = db.Column(db.Integer, nullable=False)
+    cv = db.Column(db.String(100), nullable=False)
+    cover_letter = db.Column(db.Text, nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('jobs.id'), nullable=False)
+
+    def __repr__(self):
+        return (
+            f"Application('{self.id}', '{self.gender}', "
+            f"'{self.degree}', '{self.industry}')"
+        )
