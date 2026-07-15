@@ -161,6 +161,8 @@ def post_cvs(jobid):
         picture_file = save_picture(form.cv.data)
         db.session.add(application)
         db.session.commit()
+        flash("🎉 Your application has been submitted successfully!", "success")
+
         return redirect(url_for('show_jobs'))
     return render_template('post_cvs.html', form=form, Random_Review=get_random_reviews())
 @app.route("/post_jobs", methods=["GET", "POST"])
