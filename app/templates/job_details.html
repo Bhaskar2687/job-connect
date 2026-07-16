@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body p-5">
+
+            <div class="row align-items-center mb-4">
+
+    <div class="col-md-8">
+
+        <h2 class="font-weight-bold mb-2">
+            {{ job.title }}
+        </h2>
+
+        <p class="text-muted mb-0">
+            <i class="fas fa-building"></i>
+            {{ job.industry }}
+        </p>
+
+        <p class="text-muted">
+            <i class="fas fa-calendar-alt"></i>
+            Posted on {{ job.date_posted.strftime('%d %b %Y') }}
+        </p>
+
+    </div>
+
+    <div class="col-md-4 text-md-right">
+
+        {% if current_user.usertype == "Company" %}
+
+        <a href="/show_applications/{{ job.id }}"
+           class="btn btn-dark btn-lg">
+            View Applications
+        </a>
+
+        {% else %}
+
+        <a href="/post_cvs/{{ job.id }}"
+           class="btn btn-success btn-lg">
+            Apply Now
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<hr>
+
+            <hr>
+
+           <div class="card border-0 bg-light mt-4">
+
+    <div class="card-body">
+
+        <h4 class="mb-3">
+            Job Description
+        </h4>
+
+        <p style="font-size:17px;line-height:32px;">
+            {{ job.description }}
+        </p>
+
+    </div>
+
+</div>
+
+            <hr>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

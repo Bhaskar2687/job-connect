@@ -288,10 +288,29 @@ def profile():
 @app.route("/show_jobs")
 @login_required
 def show_jobs():
-    jobs = Jobs.query.all()
+
+    search = request.args.get("search", "")
+    industry = request.args.get("industry", "")
+
+    jobs = Jobs.query
+
+    if search:
+        jobs = jobs.filter(Jobs.title.ilike(f"%{search}%"))
+
+    if industry:
+        jobs = jobs.filter(Jobs.industry == industry)
+
+    jobs = jobs.all()
+
+    industries = db.session.query(Jobs.industry).distinct().all()
+    industries = [i[0] for i in industries]
+
     return render_template(
         "show_jobs.html",
         jobs=jobs,
+        industries=industries,
+        search=search,
+        industry=industry,
         Random_Review=get_random_reviews()
     )
 
@@ -303,6 +322,18 @@ def resume(id):
         cv=cv,
         Random_Review=get_random_reviews(),
         id=id
+    )
+
+@app.route("/job/<int:id>")
+@login_required
+def job_details(id):
+
+    job = Jobs.query.get_or_404(id)
+
+    return render_template(
+        "job_details.html",
+        job=job,
+        Random_Review=get_random_reviews()
     )
 
 

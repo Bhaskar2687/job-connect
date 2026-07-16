@@ -114,3 +114,16 @@ header{
 body{
     overflow-x:hidden;
 }
+
+.search-btn{
+    background:#495057;
+    color:white;
+    border:none;
+    border-radius:6px;
+    transition:.3s;
+}
+
+.search-btn:hover{
+    background:#343a40;
+    color:white;
+}
