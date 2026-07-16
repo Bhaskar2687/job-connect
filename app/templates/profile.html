@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-dark text-white">
+<h3>👤 My Profile</h3>
+</div>
+
+<div class="card-body">
+
+<h5 class="mb-3">Personal Information</h5>
+
+<table class="table table-bordered">
+
+<tr>
+<th width="30%">Username</th>
+<td>{{ current_user.username }}</td>
+</tr>
+
+<tr>
+<th>Email</th>
+<td>{{ current_user.email }}</td>
+</tr>
+
+<tr>
+<th>User Type</th>
+<td>{{ current_user.usertype }}</td>
+</tr>
+
+</table>
+
+<hr>
+
+<h5>📊 My Statistics</h5>
+
+<div class="row mt-4">
+
+<div class="col-md-4">
+<div class="card text-center border-primary">
+<div class="card-body">
+<h2>{{ current_user.applications|length }}</h2>
+<p>Applications Submitted</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card text-center border-success">
+<div class="card-body">
+<h2>{{ current_user.jobs|length }}</h2>
+<p>Jobs Posted</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card text-center border-dark">
+<div class="card-body">
+<h2>Active</h2>
+<p>Account Status</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<hr>
+
+<h5>Quick Actions</h5>
+
+<a href="{{ url_for('show_jobs') }}" class="btn btn-dark">
+Browse Jobs
+</a>
+
+<a href="{{ url_for('logout') }}" class="btn btn-danger">
+Logout
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

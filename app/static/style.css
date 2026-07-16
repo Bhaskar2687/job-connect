@@ -12,8 +12,8 @@ h2 {
 }
 
 header {
-  text-align: center;
-  margin: 4em;
+    margin: 0;
+    padding: 0;
 }
 
 header h1, header h2 {
@@ -79,4 +79,38 @@ header h2 {
 
 .col-md-6 {
   margin-bottom: 1em;
+}
+
+body{
+    margin:0;
+    padding:0;
+}
+
+.navbar{
+    margin-bottom:0 !important;
+}
+
+header{
+    margin:0 !important;
+    padding:0 !important;
+}
+
+.container-fluid{
+    margin:0;
+    padding-left:0;
+    padding-right:0;
+}
+.container-fluid{
+    width:100%;
+    max-width:100%;
+    padding-left:0 !important;
+    padding-right:0 !important;
+}
+
+header{
+    margin:0 !important;
+}
+
+body{
+    overflow-x:hidden;
 }

@@ -272,6 +272,19 @@ def admin_applications():
         applications=applications,
         Random_Review=get_random_reviews()
     )
+@app.route("/profile")
+@login_required
+def profile():
+
+    applications = Application.query.filter_by(
+        user_id=current_user.id
+    ).count()
+
+    return render_template(
+        "profile.html",
+        applications=applications,
+        Random_Review=get_random_reviews()
+    )
 @app.route("/show_jobs")
 @login_required
 def show_jobs():
