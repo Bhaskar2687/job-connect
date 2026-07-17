@@ -92,7 +92,14 @@ class JobForm(FlaskForm):
                                                 ('Finance And Economic', 'Finance and Economic'),
                                                 ('Advertising And Marketing', 'Advertising and Marketing'),
                                                 ('Mining', 'Mining'),
-                                                ('Aerospace', 'Aerospace')],
+                                                ('Aerospace', 'Aerospace'),
+                                                 ('Electronics and commnication', 'Electronics and commnication'),
+                                                ('civil', 'civil'),
+                                                ('mechanical', 'mechanical'),
+                                                ('chemical', 'chemical'),
+                                                ('aerospace', 'aerospace'),
+                                                ('Electrical', 'Electrical'),
+                                                ('Computer Science', 'Computer Science')],
                            validators=[DataRequired()])
     description = TextAreaField('Job Description',
                                 validators=[DataRequired()])
