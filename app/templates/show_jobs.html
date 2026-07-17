@@ -108,10 +108,14 @@ Build Your Future with the Right Opportunity
 <h4 class="mb-2 font-weight-bold">
     {{ job.title }}
 </h4>
+
+<p class="mb-1">
+    <strong>Company:</strong> {{ job.company_name }}
+</p>
+
 <strong class="d-inline-block mb-2 text-secondary">
     Industry: {{ job.industry }}
 </strong>
-
 <div class="mb-2 text-muted">
     Date: {{ job.date_posted.strftime('%d %b %Y') }}
 </div>

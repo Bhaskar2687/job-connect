@@ -34,6 +34,7 @@ class RegistrationForm(FlaskForm):
     )
 
     submit = SubmitField('Sign Up')
+    # company_name = StringField("Company Name")
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
@@ -73,6 +74,10 @@ class ReviewForm(FlaskForm):
 class JobForm(FlaskForm):
     title = StringField('Job Title',
                         validators=[DataRequired(), Length(min=2, max=20)])
+    company_name = StringField(
+    'Company Name',
+    validators=[DataRequired(), Length(min=2, max=100)]
+    )
     industry = SelectField('Industry', choices=[('Construction', 'Construction'),
                                                 ('Education', 'Education'),
                                                 ('Food And Beverage', 'Food and Beverage'),
@@ -101,8 +106,16 @@ class JobForm(FlaskForm):
                                                 ('Electrical', 'Electrical'),
                                                 ('Computer Science', 'Computer Science')],
                            validators=[DataRequired()])
-    description = TextAreaField('Job Description',
-                                validators=[DataRequired()])
+    description = TextAreaField(
+    'Job Description',
+    validators=[DataRequired()]
+    )
+
+    company_name = StringField(
+        'Company Name',
+        validators=[DataRequired()]
+    )
+
     submit = SubmitField('Submit')
 
 
