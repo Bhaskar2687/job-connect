@@ -180,7 +180,7 @@ def post_cvs(jobid):
         )
         db.session.add(application)
         db.session.commit()
-        flash("🎉 Your application has been submitted successfully!", "success")
+        flash("🎉Your application just landed in our inbox. We cannot wait to learn more about you — watch your inbox for our email soon.", "success")
 
         return redirect(url_for('show_jobs'))
     return render_template('post_cvs.html', form=form, Random_Review=get_random_reviews())
