@@ -18,8 +18,8 @@ if database_url.startswith("postgresql://") and "sslmode=" not in database_url:
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-print("DATABASE_URL =", os.getenv("DATABASE_URL"))
-print("SQLALCHEMY_DATABASE_URI =", app.config["SQLALCHEMY_DATABASE_URI"])
+# print("DATABASE_URL =", os.getenv("DATABASE_URL"))
+# print("SQLALCHEMY_DATABASE_URI =", app.config["SQLALCHEMY_DATABASE_URI"])
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
