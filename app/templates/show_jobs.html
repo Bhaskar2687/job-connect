@@ -1,90 +1,97 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container mt-4 mb-4">
+<form method="GET" action="{{ url_for('show_jobs') }}">
+    <div class="row g-2 align-items-end">
 
-    <form method="GET" action="{{ url_for('show_jobs') }}">
-
-        <div class="row">
-
-            <div class="col-md-5 mb-2">
-
-                <input type="text"
-                       name="search"
-                       class="form-control"
-                       placeholder="🔍 Search Job Title..."
-                       value="{{ search }}">
-
-            </div>
-
-            <div class="col-md-4 mb-2">
-
-                <select name="industry" class="form-control">
-
-                    <option value="">All Industries</option>
-
-                    {% for item in industries %}
-
-                    <option value="{{ item }}"
-                        {% if industry == item %}selected{% endif %}>
-                        {{ item }}
-                    </option>
-
-                    {% endfor %}
-
-                </select>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <button class="btn btn-block search-btn">
-                     <i class="fas fa-search">  
-
-                     </i> 
-                             Search Jobs
-                </button>
-
-            </div>
-
+        <div class="col-md-3">
+            <label>Search</label>
+            <input type="text"
+                   name="search"
+                   class="form-control"
+                   style="height:50px;border:1px solid #d1d5db;border-radius:8px;"
+                   placeholder="Job title..."
+                   value="{{ search }}">
         </div>
 
-    </form>
+        <div class="col-md-2">
+            <label>Industry</label>
+            <select name="industry" class="form-control" 
+                style="height:50px;border:1px solid #d1d5db;border-radius:8px;">
+                <option value="">All Industries</option>
+                {% for item in industries %}
+                <option value="{{ item }}"
+                    {% if industry == item %}selected{% endif %}>
+                    {{ item }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
 
-</div>
+        <div class="col-md-2">
+            <label>Experience</label>
+            <select name="experience" class="form-control"
+                      style="height:50px;border:1px solid #d1d5db;border-radius:8px;">
+                <option value="">All Experience</option>
+                <option value="Fresher" {% if experience=="Fresher" %}selected{% endif %}>Fresher</option>
+                <option value="0-2 Years" {% if experience=="0-2 Years" %}selected{% endif %}>0-2 Years</option>
+                <option value="1-3 Years" {% if experience=="1-3 Years" %}selected{% endif %}>1-3 Years</option>
+                <option value="3-5 Years" {% if experience=="3-5 Years" %}selected{% endif %}>3-5 Years</option>
+                <option value="5+ Years" {% if experience=="5+ Years" %}selected{% endif %}>5+ Years</option>
+            </select>
+        </div>
 
-<header class="bg-secondary text-white py-5" style="margin:0;">
-<div class="container-fluid">
+        <div class="col-md-3">
+            <label>Location</label>
+            <input type="text"
+                   name="location"
+                   style="height:50px;border:1px solid #d1d5db;border-radius:8px;"
+                   class="form-control"
+                   placeholder="Location"
+                   value="{{ location }}">
+        </div>
 
-  <div class="row align-items-center">
+        <div class="col-md-2">
+           <button type="submit"
+        class="btn btn-dark w-100"
+        style="height:50px;border-radius:8px;font-weight:600;">
+    <i class="fas fa-search"></i> Search Jobs
+</button>
+        </div>
 
-<div class="col-lg-8 pl-5">
+    </div>
+</form>
 
-<h1 style="font-size:48px;font-weight:700;">
-Find Your Next Career Opportunity
+<header class="bg-secondary text-white py-3" style="margin:0;">
+    
+    <div class="container-fluid">
+ 
+  <div class="row align-items-center gx-2">
+
+
+<div class="col-lg-7 pl-5">
+
+<h1 class="display-5 font-weight-bold text-dark">
+    Find Your Next Career Opportunity
 </h1>
 
-<h3 class="mt-3">
-Build Your Future with the Right Opportunity
+<h3 class="display-5 font-weight-bold text-dark">
+    Build your future with verified opportunities from trusted companies.
 </h3>
 
-<br>
-
-<p>✔ Latest Job Openings</p>
-<p>✔ Trusted Companies</p>
-<p>✔ Easy Applications</p>
-<p>✔ Secure Platform</p>
+<p>✔ Find Jobs From Trusted Sources</p>
+<p>✔ One Place For Multiple Career Opportunities</p>
+<p>✔ Official Company Application Links</p>
+<p>✔ Fast & Easy Job Discovery</p>
 
 </div>
 
-            <div class="col-lg-4 text-center">
-
-                <img src="{{ url_for('static', filename='images/career.png') }}"
-                     class="img-fluid"
-                     style="max-height:320px;"
-                     alt="Career">
-
-            </div>
+<div class="col-lg-4 text-center">
+    <img src="{{ url_for('static', filename='images/career.png') }}"
+         class="img-fluid"
+         style="max-height:260px; transform: translateX(180px);"
+         alt="Career">
+</div>
 
         </div>
 
@@ -92,39 +99,107 @@ Build Your Future with the Right Opportunity
 
 </header>
 
-<section class="container-fluid px-4 py-4">
 
-  <br>
 
-<div class="row">
+<section class="container-fluid px-5 py-3">
 
+<div class="row g-3 align-items-end">
 {% for job in jobs %}
 
-<div class="col-lg-4">
+<div class="col-12 col-md-6 col-lg-4 mb-4">
 
-<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-
+<div class="row g-0 border rounded-3 overflow-hidden flex-md-row mb-4 shadow-sm position-relative job-card"
+     style="background:#ffffff;border:1px solid #e5e7eb;">   
+     
+     
 <div class="col p-4 d-flex flex-column position-static">
-<h4 class="mb-2 font-weight-bold">
+
+<div class="d-flex justify-content-between align-items-start">
+
+<h5 class="font-weight-bold mb-1 text-dark">
     {{ job.title }}
-</h4>
+</h5>
 
-<p class="mb-1">
-    <strong>Company:</strong> {{ job.company_name }}
-</p>
-
-<strong class="d-inline-block mb-2 text-secondary">
-    Industry: {{ job.industry }}
-</strong>
-<div class="mb-2 text-muted">
-    Date: {{ job.date_posted.strftime('%d %b %Y') }}
+    <span class="badge badge-dark px-3 py-2"
+      style="font-size:13px;
+             border-radius:20px;
+             background:#495057;">
+    {{ job.experience }}
+</span>
 </div>
 
-<div class="mt-3">
-    <a href="{{ url_for('job_details', id=job.id) }}"
-   class="btn btn-outline-dark btn-sm">
-    <i class="fas fa-eye"></i> View Details
-</a>
+<div class="d-flex align-items-center mb-3">
+
+    <div style="
+        width:38px;
+        height:38px;
+        border-radius:50%;
+        background:#4b5563;
+        color:white;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-weight:bold;
+        font-size:17px;
+        margin-right:12px;">
+        {{ job.company_name[0] }}
+    </div>
+
+    <div>
+
+<h5 class="mb-0 font-weight-bold"
+    style="color:#343a40;font-size:20px;">
+    {{ job.company_name }}
+</h5>
+    </div>
+
+</div>
+<div class="mb-3">
+
+<span class="badge mr-2 p-2"
+      style="background:#f3f4f6;
+             color:#374151;
+             border:1px solid #d1d5db;
+             border-radius:8px;
+             font-size:13px;">
+     {{ job.location }}
+</span>
+
+<span class="badge p-2 mr-2"
+      style="background:#e5e7eb;
+             color:#374151;
+             border-radius:8px;
+             font-size:13px;">
+    {{ job.job_type }}
+</span>
+
+</div>
+
+<div class="mb-3">
+
+   <span class="badge badge-light border text-dark p-2 mr-2">
+    {{ job.industry }}
+</span>
+
+
+
+</div>
+
+<div class="d-flex justify-content-between align-items-center mt-4">
+
+    <p class="text-muted mb-0">
+        <i class="far fa-calendar-alt"></i>
+        Posted {{ job.date_posted.strftime('%d %b %Y') }}
+    </p>
+
+    <a href="{{ url_for('job', job_id=job.id) }}"
+       class="btn btn-dark px-4"
+       style="border-radius:8px;font-weight:600;">
+        View Details
+
+        
+    </a>
+
 </div>
 
 

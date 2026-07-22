@@ -44,6 +44,46 @@
 
 <br>
 
+<div class="form-group">
+    {{ form.experience.label(class="form-control-label") }}
+    {{ form.experience(class="form-control form-control-lg") }}
+</div>
+
+<br>
+
+<div class="form-group">
+    {{ form.location.label(class="form-control-label") }}
+    {{ form.location(class="form-control form-control-lg") }}
+</div>
+
+<br>
+
+<div class="form-group">
+    {{ form.job_type.label(class="form-control-label") }}
+
+    {% if form.job_type.errors %}
+        {{ form.job_type(class="form-control form-control-lg is-invalid") }}
+
+        <div class="invalid-feedback">
+            {% for error in form.job_type.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        {{ form.job_type(class="form-control form-control-lg") }}
+    {% endif %}
+</div>
+
+<br>
+
+<div class="form-group">
+    {{ form.apply_link.label(class="form-control-label") }}
+    {{ form.apply_link(class="form-control form-control-lg", placeholder="https://company.com/careers/job123") }}
+</div>
+
+<br>
+
 
                 <div class="form-group">
                     {{ form.industry.label(class="form-control-label") }}

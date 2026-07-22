@@ -1,33 +1,245 @@
 {% extends "layout.html" %}
-
 {% block content %}
+<!-- Header -->
+<div class="row justify-content-center mt-5 mb-5">
+    <div class="col-lg-8 text-center">
 
-<div class="container mt-5">
+        <h1 class="font-weight-bold text-dark mb-2"
+            style="font-size:48px;">
+            Admin Dashboard
+        </h1>
 
-    <h2>Admin Dashboard</h2>
-    <hr>
+        <!-- <p class="text-muted"
+           style="font-size:18px;">
+            Manage jobs, users, and platform activity.
+        </p> -->
 
-    <div class="list-group">
+    </div>
+</div>
 
-        <a href="{{ url_for('post_jobs') }}" class="list-group-item list-group-item-action">
-            ➕ Add New Job
-        </a>
+    <!-- <a href="{{ url_for('admin_logout') }}"
+       class="btn btn-outline-danger">
+        Logout
+    </a> -->
 
-        <a href="{{ url_for('admin_jobs') }}" class="list-group-item list-group-item-action">
-            📋 View All Jobs
-        </a>
+</div>
 
-        <a href="{{ url_for('admin_logout') }}" class="btn btn-secondary">
-                Logout
-        </a>
+<!-- Statistics Cards -->
+<div class="row mb-5">
 
-        <a href="{{ url_for('admin_applications') }}"
-                class="btn btn-outline-dark">
-                    📋 View Applications
-        </a>
+    <div class="col-md-4 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-2">
+                    <i class="fas fa-briefcase fa-2x text-dark"></i>
+                </div>
+                <h3 class="font-weight-bold mb-1">{{ total_jobs }}</h3>
+                <p class="text-muted mb-0">Total Jobs</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-2">
+                    <i class="fas fa-users fa-2x text-dark"></i>
+                </div>
+                <h3 class="font-weight-bold mb-1">{{ total_users }}</h3>
+                <p class="text-muted mb-0">Total Users</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-2">
+                    <i class="fas fa-star fa-2x text-dark"></i>
+                </div>
+                <h3 class="font-weight-bold mb-1">{{ total_reviews }}</h3>
+                <p class="text-muted mb-0">Total Reviews</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0 mb-5">
+    <div class="card-header bg-white">
+        <h4 class="mb-0 font-weight-bold">
+            Quick Actions
+        </h4>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-4 mb-3">
+                <a href="{{ url_for('post_jobs') }}"
+                   class="btn btn-outline-dark btn-block py-3">
+                    <i class="fas fa-plus mr-2"></i>
+                    Add New Job
+                </a>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <a href="{{ url_for('admin_jobs') }}"
+                   class="btn btn-outline-dark btn-block py-3">
+                    <i class="fas fa-list mr-2"></i>
+                    View All Jobs
+                </a>
+            </div>
+
+            <div class="col-md-4 mb-3">
+<a href="{{ url_for('admin_users') }}"
+   class="btn btn-outline-dark btn-lg btn-block">
+    <i class="fas fa-list"></i>
+    View All Users
+</a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- User Details Table -->
+
+
+<!-- Dashboard Activity -->
+<div class="row">
+
+    <!-- Latest Jobs -->
+    <div class="col-lg-4 mb-4">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-header bg-white border-bottom">
+                <h6 class="mb-0 font-weight-bold">Latest Jobs</h6>
+            </div>
+
+            <div class="card-body p-0">
+
+                <ul class="list-group list-group-flush">
+
+                {% for job in latest_jobs %}
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <span class="text-truncate mr-2">
+                            {{ job.title }}
+                        </span>
+
+                        <small class="text-muted">
+                            {{ job.date_posted.strftime('%d %b') }}
+                        </small>
+
+                    </li>
+
+                {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Latest Users -->
+    <div class="col-lg-4 mb-4">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-header bg-white border-bottom">
+                <h6 class="mb-0 font-weight-bold">Latest Users</h6>
+            </div>
+
+            <div class="card-body p-0">
+
+                <ul class="list-group list-group-flush">
+
+                {% for user in latest_users %}
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <span class="font-weight-medium text-truncate mr-2">
+                            {{ user.username }}
+                        </span>
+
+                        <small class="text-muted text-uppercase">
+                            {{ user.usertype }}
+                        </small>
+
+                    </li>
+
+                {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Latest User Emails -->
+    <div class="col-lg-4 mb-4">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-header bg-white border-bottom">
+                <h6 class="mb-0 font-weight-bold">Latest User Emails</h6>
+            </div>
+
+            <div class="card-body p-0">
+
+                <ul class="list-group list-group-flush">
+
+                {% for user in latest_users %}
+
+                    <li class="list-group-item">
+
+                        <div class="text-truncate">
+                            {{ user.email }}
+                        </div>
+
+                    </li>
+                
+
+                {% endfor %}
+
+    
+
+                </ul>
+
+
+            </div>
+
+        </div>
 
     </div>
 
 </div>
+<div class="text-center mt-5 mb-4">
+
+    <a href="{{ url_for('admin_logout') }}"
+       class="btn btn-outline-danger px-5"
+       style="border-radius:10px;">
+
+        <i class="fas fa-sign-out-alt mr-2"></i>
+
+        Logout
+
+    </a>
+
+</div>
+
+</div>
+</div>
+
+
 
 {% endblock %}

@@ -1,0 +1,244 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h3 class="mb-0">
+                        Job Details
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="mb-4">
+
+                        <small class="text-muted">
+                            Job Title
+                        </small>
+
+                        <h4 class="font-weight-bold">
+                            {{ job.title }}
+                        </h4>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted">
+                                Company
+                            </small>
+
+                            <h5>
+                                {{ job.company_name }}
+                            </h5>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted">
+                                Industry
+                            </small>
+
+                            <h5>
+                                {{ job.industry }}
+                            </h5>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted">
+                                Location
+                            </small>
+
+                            <h5>
+                                {{ job.location }}
+                            </h5>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted">
+                                Experience
+                            </small>
+
+                            <h5>
+                                {{ job.experience }}
+                            </h5>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted">
+                                Job Type
+                            </small>
+
+                            <h5>
+                                {{ job.job_type }}
+                            </h5>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted">
+                                Posted On
+                            </small>
+
+                            <h5>
+                                {{ job.date_posted.strftime('%d %b %Y') }}
+                            </h5>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <small class="text-muted">
+                        Description
+                    </small>
+
+                    <p class="mt-2">
+                        {{ job.description }}
+                    </p>
+
+                    <hr>
+
+                    <small class="text-muted">
+                        Career Link
+                    </small>
+
+                    <p>
+
+                        <a href="{{ job.apply_link }}"
+                           target="_blank">
+
+                            {{ job.apply_link }}
+
+                        </a>
+
+                    </p>
+
+                    <div class="d-flex justify-content-between mt-5">
+
+                        <a href="{{ url_for('admin_jobs') }}"
+                           class="btn btn-outline-secondary">
+
+                            <i class="fas fa-arrow-left"></i>
+
+                            Back
+
+                        </a>
+
+                        <div>
+
+<a href="{{ url_for('edit_job', job_id=job.id) }}"
+   class="btn btn-warning mr-2">
+    <i class="fas fa-edit"></i>
+    Edit Job
+</a>
+
+<button class="btn btn-danger"
+        data-toggle="modal"
+        data-target="#deleteModal">
+
+    <i class="fas fa-trash"></i>
+    Delete Job
+
+</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-danger text-white">
+
+                <h5 class="modal-title">
+
+                    Delete Job
+
+                </h5>
+
+                <button class="close"
+                        data-dismiss="modal">
+
+                    <span>&times;</span>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <h5>
+
+                    Are you sure?
+
+                </h5>
+
+                <p class="text-muted">
+
+                    This action cannot be undone.
+
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary"
+                        data-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <a href="{{ url_for('delete_job', job_id=job.id) }}"
+                   class="btn btn-danger">
+
+                    Delete
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

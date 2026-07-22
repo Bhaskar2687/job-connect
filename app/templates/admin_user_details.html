@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+
+    <div class="text-center mb-5">
+
+        <div style="
+            width:90px;
+            height:90px;
+            border-radius:50%;
+            background:#343a40;
+            color:white;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:38px;
+            font-weight:bold;
+            margin:auto;">
+
+            {{ user.username[0]|upper }}
+
+        </div>
+
+        <h2 class="font-weight-bold mt-3">
+            {{ user.username }}
+        </h2>
+
+        <p class="text-muted">
+            User Profile
+        </p>
+
+    </div>
+
+    <div class="card shadow border-0">
+
+        <div class="card-body p-4">
+
+            <h4 class="mb-4 font-weight-bold">
+                User Information
+            </h4>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-4">
+
+                    <small class="text-muted">
+                        Username
+                    </small>
+
+                    <h5 class="font-weight-bold">
+                        {{ user.username }}
+                    </h5>
+
+                </div>
+
+                <div class="col-md-6 mb-4">
+
+                    <small class="text-muted">
+                        Email
+                    </small>
+
+                    <h5 class="font-weight-bold">
+                        {{ user.email }}
+                    </h5>
+
+                </div>
+
+                <div class="col-md-6 mb-4">
+
+                    <small class="text-muted">
+                        User Type
+                    </small>
+
+                    <h5 class="font-weight-bold">
+                        {{ user.usertype }}
+                    </h5>
+
+                </div>
+
+                <div class="col-md-6 mb-4">
+
+<small class="text-muted">
+    Career List
+</small>
+
+<h5 class="font-weight-bold">
+    {{ user.career_list|length }} Jobs
+</h5>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="text-right">
+
+                <a href="{{ url_for('admin_users') }}"
+                   class="btn btn-outline-dark">
+
+                    <i class="fas fa-arrow-left mr-2"></i>
+
+                    Back to Users
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

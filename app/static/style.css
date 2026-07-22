@@ -127,3 +127,48 @@ body{
     background:#343a40;
     color:white;
 }
+.view-btn{
+    background:#374151;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:10px 22px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.view-btn:hover{
+    background:#1f2937;
+    color:#fff;
+    text-decoration:none;
+}
+
+.experience-badge{
+    background:#374151;
+    color:#fff;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.industry-badge{
+    background:#f3f4f6;
+    color:#374151;
+    border:1px solid #d1d5db;
+}
+
+.experience-badge{
+    background:#374151;
+    color:#fff;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.job-card{
+    max-width: 430px;
+    margin: auto;
+    border-radius: 14px !important;
+}

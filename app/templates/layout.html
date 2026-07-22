@@ -70,19 +70,11 @@
             background:#c82333;
         }
 
-       .main-content{
-            min-height:80vh;
-            padding-top:0 !important;
-            padding-bottom:40px;
-        }
-
         footer{
-
             background:#212529;
             color:white;
             padding:20px;
             text-align:center;
-            margin-top:40px;
         }
 
         .alert{
@@ -94,17 +86,27 @@
 
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
 
     <div class="container-fluid">
 
-        <a class="navbar-brand"
-           href="{{ url_for('show_jobs') }}">
-            JobConnect
-        </a>
+{% if session.get("admin") %}
 
+<a class="navbar-brand"
+   href="{{ url_for('admin_dashboard') }}">
+    JobConnect
+</a>
+
+{% else %}
+
+<a class="navbar-brand"
+   href="{{ url_for('show_jobs') }}">
+    JobConnect
+</a>
+
+{% endif %}
         <button class="navbar-toggler"
                 type="button"
                 data-toggle="collapse"
@@ -163,31 +165,49 @@
 
                 </li>
 
-            {% else %}
+{% else %}
 
-                <li class="nav-item">
+    {% if session.get("admin") %}
 
-                    <a class="nav-link"
-                       href="{{ url_for('login') }}">
+        <li class="nav-item">
 
-                        Login
+            <span class="nav-link font-weight-bold">
 
-                    </a>
+                <i class="fas fa-user-shield mr-2"></i>
 
-                </li>
+                Admin
 
-                <li class="nav-item">
+            </span>
 
-                    <a class="nav-link"
-                       href="{{ url_for('register') }}">
+        </li>
 
-                        Register
+    {% else %}
 
-                    </a>
+        <li class="nav-item">
 
-                </li>
+            <a class="nav-link"
+               href="{{ url_for('login') }}">
 
-            {% endif %}
+                Login
+
+            </a>
+
+        </li>
+
+        <li class="nav-item">
+
+            <a class="nav-link"
+               href="{{ url_for('register') }}">
+
+                Register
+
+            </a>
+
+        </li>
+
+    {% endif %}
+
+{% endif %}
 
             </ul>
 
@@ -197,14 +217,15 @@
 
 </nav>
 
-<div class="container-fluid p-0 main-content">
-{% with messages = get_flashed_messages(with_categories=true) %}
+<div class="container mt-3">
 
+{% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
 
         {% for category, message in messages %}
 
-            <div class="alert alert-{{ category }} alert-dismissible fade show">
+            <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm"
+                 role="alert">
 
                 {{ message }}
 
@@ -212,7 +233,7 @@
                         class="close"
                         data-dismiss="alert">
 
-                    &times;
+                    <span>&times;</span>
 
                 </button>
 
@@ -221,14 +242,16 @@
         {% endfor %}
 
     {% endif %}
-
 {% endwith %}
 
-{% block content %}
-
-{% endblock %}
-
 </div>
+<main class="flex-grow-1">
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
 
 <footer>
 
@@ -243,7 +266,7 @@
         </p>
 
         <small>
-            © 2026 JobConnect. All Rights Reserved.
+            ©JobConnect. All Rights Reserved.
         </small>
 
     </div>

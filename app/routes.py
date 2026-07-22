@@ -4,7 +4,7 @@ from PIL import Image
 import os
 import secrets
 from app.forms import RegistrationForm, LoginForm, ReviewForm, JobForm, ApplicationForm
-from app.models import User, Jobs, Review, Application
+from app.models import User, Jobs, Review, Application, CareerList
 from flask_login import login_user, current_user, logout_user, login_required
 import random
 
@@ -103,7 +103,12 @@ def login():
 
 @app.route("/admin/jobs")
 def admin_jobs():
+
+    if not session.get("admin"):
+        return redirect(url_for("admin"))
+
     jobs = Jobs.query.all()
+
     return render_template(
         "admin_jobs.html",
         jobs=jobs,
@@ -131,13 +136,39 @@ def delete_job(job_id):
     flash("Job deleted successfully!", "success")
 
     return redirect(url_for("admin_jobs"))
+from app.models import User, Jobs, Review
+
+from flask import session, abort
+
 @app.route("/admin/dashboard")
 def admin_dashboard():
-    if "admin" not in session:
-        return redirect(url_for("admin"))
-    jobs = Jobs.query.all()
-    return render_template("admin_dashboard.html", Random_Review=get_random_reviews())
 
+    if not session.get("admin"):
+        return redirect(url_for("admin"))
+
+    total_jobs = Jobs.query.count()
+    total_users = User.query.count()
+    total_reviews = Review.query.count()
+
+    users = User.query.order_by(User.id.desc()).all()
+
+    latest_jobs = Jobs.query.order_by(
+        Jobs.date_posted.desc()
+    ).limit(5).all()
+
+    latest_users = User.query.order_by(
+        User.id.desc()
+    ).limit(5).all()
+
+    return render_template(
+        "admin_dashboard.html",
+        total_jobs=total_jobs,
+        total_users=total_users,
+        total_reviews=total_reviews,
+        users=users,
+        latest_jobs=latest_jobs,
+        latest_users=latest_users
+    )
 
 @app.route("/logout")
 @login_required
@@ -176,7 +207,7 @@ def post_cvs(jobid):
             cover_letter=form.cover_letter.data,
             application_submiter=current_user,
             application_jober=job,
-            cv=picture_file
+            cv=picture_filef
         )
         db.session.add(application)
         db.session.commit()
@@ -184,6 +215,7 @@ def post_cvs(jobid):
 
         return redirect(url_for('show_jobs'))
     return render_template('post_cvs.html', form=form, Random_Review=get_random_reviews())
+
 @app.route("/post_jobs", methods=["GET", "POST"])
 def post_jobs():
 
@@ -195,11 +227,15 @@ def post_jobs():
     if form.validate_on_submit():
         # print("Company Name:", form.company_name.data)
         job = Jobs(
-            title=form.title.data,
-            company_name=form.company_name.data,
-            industry=form.industry.data,
-            description=form.description.data,
-            user_id=1
+        title=form.title.data,
+        company_name=form.company_name.data,
+        experience=form.experience.data,
+        location=form.location.data,
+        industry=form.industry.data,
+        description=form.description.data,
+        job_type=form.job_type.data,
+        apply_link=form.apply_link.data,
+        user_id=1
         )
         db.session.add(job)
         db.session.commit()
@@ -297,7 +333,8 @@ def show_jobs():
 
     search = request.args.get("search", "")
     industry = request.args.get("industry", "")
-
+    experience = request.args.get("experience", "")
+    location = request.args.get("location", "")
     jobs = Jobs.query
 
     if search:
@@ -305,6 +342,10 @@ def show_jobs():
 
     if industry:
         jobs = jobs.filter(Jobs.industry == industry)
+    if experience:
+        jobs = jobs.filter(Jobs.experience == experience)
+    if location:
+        jobs = jobs.filter(Jobs.location.ilike(f"%{location}%"))
 
     jobs = jobs.all()
 
@@ -312,12 +353,14 @@ def show_jobs():
     industries = [i[0] for i in industries]
 
     return render_template(
-        "show_jobs.html",
-        jobs=jobs,
-        industries=industries,
-        search=search,
-        industry=industry,
-        Random_Review=get_random_reviews()
+    "show_jobs.html",
+    jobs=jobs,
+    industries=industries,
+    search=search,
+    industry=industry,
+    experience=experience,
+    location=location,
+    Random_Review=get_random_reviews()
     )
 
 @app.route("/resume/<id>", methods=['GET'])
@@ -329,17 +372,158 @@ def resume(id):
         Random_Review=get_random_reviews(),
         id=id
     )
+@app.route("/job/<int:job_id>")
+def job(job_id):
+    job = Jobs.query.get_or_404(job_id)
 
-@app.route("/job/<int:id>")
-@login_required
-def job_details(id):
-
-    job = Jobs.query.get_or_404(id)
+    similar_jobs = Jobs.query.filter(
+        Jobs.id != job.id,
+        Jobs.industry == job.industry,
+        Jobs.job_type == job.job_type
+    ).order_by(Jobs.date_posted.desc()).limit(3).all()
 
     return render_template(
-        "job_details.html",
-        job=job,
-        Random_Review=get_random_reviews()
+    "job_details.html",
+    title=job.title,
+    job=job,
+    similar_jobs=similar_jobs
+    )
+
+@app.route("/career_list/add/<int:job_id>")
+@login_required
+def add_to_career_list(job_id):
+
+    job = Jobs.query.get_or_404(job_id)
+
+    existing = CareerList.query.filter_by(
+        user_id=current_user.id,
+        job_id=job.id
+    ).first()
+
+    if existing:
+        flash("This job is already in your Career List.", "info")
+        return redirect(url_for("job", job_id=job.id))
+
+    career_job = CareerList(
+        user_id=current_user.id,
+        job_id=job.id
+    )
+
+    db.session.add(career_job)
+    db.session.commit()
+
+    flash("Job added to your Career List successfully!", "success")
+
+    return redirect(url_for("job", job_id=job.id))
+
+
+@app.route("/career-list")
+@login_required
+def career_list():
+
+    saved_jobs = CareerList.query.filter_by(
+        user_id=current_user.id
+    ).order_by(CareerList.date_added.desc()).all()
+
+    return render_template(
+        "career_list.html",
+        saved_jobs=saved_jobs,
+        title="My Career List"
+    )
+
+@app.route("/career-list/remove/<int:job_id>")
+@login_required
+def remove_career_list(job_id):
+
+    saved = CareerList.query.filter_by(
+        user_id=current_user.id,
+        job_id=job_id
+    ).first()
+
+    if saved:
+        db.session.delete(saved)
+        db.session.commit()
+        flash("Removed from Career List.", "success")
+
+    return redirect(url_for("career_list"))
+
+@app.route('/admin/user/<int:user_id>')
+def admin_user_details(user_id):
+
+    if not session.get("admin"):
+        return redirect(url_for("admin"))
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template(
+        'admin_user_details.html',
+        user=user
     )
 
 
+@app.route("/admin/users")
+def admin_users():
+
+    if not session.get("admin"):
+        return redirect(url_for("admin"))
+
+    search = request.args.get("search", "")
+
+    if search:
+        users = User.query.filter(
+            db.or_(
+                User.username.ilike(f"%{search}%"),
+                User.email.ilike(f"%{search}%")
+            )
+        ).order_by(User.id.desc()).all()
+    else:
+        users = User.query.order_by(User.id.desc()).all()
+
+    return render_template(
+        "admin_users.html",
+        users=users,
+        search=search
+    )
+
+@app.route("/admin/job/<int:job_id>")
+def admin_job_details(job_id):
+
+    if not session.get("admin"):
+        return redirect(url_for("admin"))
+
+    job = Jobs.query.get_or_404(job_id)
+
+    return render_template(
+        "admin_job_details.html",
+        job=job
+    )
+
+@app.route("/admin/job/edit/<int:job_id>", methods=["GET", "POST"])
+def edit_job(job_id):
+
+    if not session.get("admin"):
+        return redirect(url_for("admin"))
+
+    job = Jobs.query.get_or_404(job_id)
+
+    if request.method == "POST":
+
+        job.title = request.form["title"]
+        job.company_name = request.form["company_name"]
+        job.industry = request.form["industry"]
+        job.location = request.form["location"]
+        job.job_type = request.form["job_type"]
+        job.experience = request.form["experience"]
+        job.description = request.form["description"]
+        job.apply_link = request.form["apply_link"]
+
+        db.session.commit()
+
+        flash("Job updated successfully!", "success")
+
+        return redirect(url_for("admin_job_details", job_id=job.id))
+
+    return render_template(
+        "edit_job.html",
+        job=job
+    )

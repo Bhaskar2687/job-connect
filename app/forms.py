@@ -115,6 +115,38 @@ class JobForm(FlaskForm):
         'Company Name',
         validators=[DataRequired()]
     )
+    experience = SelectField(
+    'Experience',
+    choices=[
+        ('Fresher', 'Fresher'),
+        ('0-2 Years', '0-2 Years'),
+        ('1-3 Years', '1-3 Years'),
+        ('3-5 Years', '3-5 Years'),
+        ('5+ Years', '5+ Years')
+    ],
+    validators=[DataRequired()]
+    )
+
+    location = StringField(
+    'Location',
+    validators=[DataRequired()]
+    )
+    job_type = SelectField(
+    'Job Type',
+    choices=[
+        ('Full Time', 'Full Time'),
+        ('Internship', 'Internship'),
+        ('Remote', 'Remote'),
+        ('Hybrid', 'Hybrid'),
+        ('Contract', 'Contract')
+    ],
+    validators=[DataRequired()]
+    )
+
+    apply_link = StringField(
+    "Official Apply Link",
+    validators=[DataRequired()]
+    )
 
     submit = SubmitField('Submit')
 

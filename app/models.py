@@ -22,8 +22,17 @@ class User(db.Model, UserMixin):
         return f"User('{self.id}', '{self.username}', '{self.usertype}', '{self.email}')"
 class Jobs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+
     title = db.Column(db.String(100), nullable=False)
     company_name = db.Column(db.String(100), nullable=False)
+
+    experience = db.Column(db.String(50), nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    
+    job_type = db.Column(db.String(50), nullable=False)
+
+    apply_link = db.Column(db.String(500), nullable=False)
+
     industry = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
 
@@ -66,3 +75,32 @@ class Application(db.Model):
             f"Application('{self.id}', '{self.gender}', "
             f"'{self.degree}', '{self.industry}')"
         )
+
+from datetime import datetime
+
+class CareerList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.id'),
+        nullable=False
+    )
+
+    job_id = db.Column(
+        db.Integer,
+        db.ForeignKey('jobs.id'),
+        nullable=False
+    )
+
+    date_added = db.Column(
+        db.DateTime,
+        default=date.today
+    )
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'job_id', name='unique_saved_job'),
+    )
+
+    user = db.relationship('User', backref='career_list')
+    job = db.relationship('Jobs', backref='career_users')
