@@ -4,8 +4,8 @@
 <form method="GET" action="{{ url_for('show_jobs') }}">
     <div class="row g-2 align-items-end">
 
-        <div class="col-md-3">
-            <label>Search</label>
+        <div class="col-md-3 px-3">
+            <label class="pl-2">Search</label>
             <input type="text"
                    name="search"
                    class="form-control"
@@ -62,43 +62,20 @@
     </div>
 </form>
 
-<header class="bg-secondary text-white py-3" style="margin:0;">
-    
-    <div class="container-fluid">
- 
-  <div class="row align-items-center gx-2">
+<div class="container my-4">
+    <div class="bg-light rounded shadow-sm text-center py-4 px-3">
 
+        <h2 class="font-weight-bold mb-2">
+            Find Your Next Career Opportunity
+        </h2>
 
-<div class="col-lg-7 pl-5">
-
-<h1 class="display-5 font-weight-bold text-dark">
-    Find Your Next Career Opportunity
-</h1>
-
-<h3 class="display-5 font-weight-bold text-dark">
-    Build your future with verified opportunities from trusted companies.
-</h3>
-
-<p>✔ Find Jobs From Trusted Sources</p>
-<p>✔ One Place For Multiple Career Opportunities</p>
-<p>✔ Official Company Application Links</p>
-<p>✔ Fast & Easy Job Discovery</p>
-
-</div>
-
-<div class="col-lg-4 text-center">
-    <img src="{{ url_for('static', filename='images/career.png') }}"
-         class="img-fluid"
-         style="max-height:260px; transform: translateX(180px);"
-         alt="Career">
-</div>
-
-        </div>
+        <p class="text-muted mb-0">
+            Discover verified job opportunities from trusted companies.
+            Apply directly through official company websites.
+        </p>
 
     </div>
-
-</header>
-
+</div>
 
 
 <section class="container-fluid px-5 py-3">

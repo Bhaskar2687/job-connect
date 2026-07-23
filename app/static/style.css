@@ -172,3 +172,45 @@ body{
     margin: auto;
     border-radius: 14px !important;
 }
+
+.hero-image{
+    max-width: 260px;
+    max-height: 160px;
+    width: 100%;
+    height: auto;
+    transform: translateX(15px);
+}
+@media (max-width:991.98px){
+    .hero-image{
+        display:none;
+    }
+}
+
+.bg-light{
+    background:#f8f9fa !important;
+    border-radius:12px;
+}
+
+.bg-light h2{
+    font-size:2rem;
+    font-weight:700;
+}
+
+.bg-light p{
+    font-size:1rem;
+    color:#6c757d;
+}
+
+@media(max-width:768px){
+    .bg-light{
+        padding:18px !important;
+    }
+
+    .bg-light h2{
+        font-size:1.5rem;
+    }
+
+    .bg-light p{
+        font-size:.95rem;
+    }
+}
