@@ -7,11 +7,21 @@ from app.models import User
 
 class RegistrationForm(FlaskForm):
     usertype = SelectField(
-        'Select Usertype',
-        choices=[('Job Seeker', 'Job Seeker'),
-                 ('Company', 'Company')],
-        validators=[DataRequired()]
+    "usertype",
+    choices=[
+        ("job_seeker", "Job Seeker")
+    ],
+    default="job_seeker"
     )
+
+
+
+    # usertype = SelectField(
+    #     'Select Usertype',
+    #     choices=[('Job Seeker', 'Job Seeker'),
+    #              ('Company', 'Company')],
+    #     validators=[DataRequired()]
+    # )
 
     username = StringField(
         'Username',
@@ -50,17 +60,32 @@ class RegistrationForm(FlaskForm):
                 'That email is already taken. Please choose a different one.'
             )
 
-
 class LoginForm(FlaskForm):
-    usertype = SelectField('Select Usertype',
-                           choices=[('Job Seeker', 'Job Seeker'),
-                                    ('Company', 'Company')],
-                           validators=[DataRequired()])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
+    usertype = SelectField(
+        'Select User Type',
+        choices=[
+            ('Job Seeker', 'Job Seeker')
+        ],
+        default='Job Seeker',
+        validators=[DataRequired()]
+    )
+
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+
+# class LoginForm(FlaskForm):
+#     usertype = SelectField('Select Usertype',
+#                            choices=[('Job Seeker', 'Job Seeker'),
+#                                     ('Company', 'Company')],
+#                            validators=[DataRequired()])
+#     email = StringField('Email',
+#                         validators=[DataRequired(), Email()])
+#     password = PasswordField('Password', validators=[DataRequired()])
+#     remember = BooleanField('Remember Me')
+#     submit = SubmitField('Login')
 
 
 class ReviewForm(FlaskForm):

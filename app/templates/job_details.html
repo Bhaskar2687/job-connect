@@ -116,6 +116,18 @@
 
 </div>
 
+<div class="text-center mt-3">
+
+    <a href="{{ url_for('add_to_career_list', job_id=job.id) }}"
+       class="btn btn-outline-dark btn-lg px-5"
+       style="border-radius:8px;font-weight:600;">
+
+        + Add to Career List
+
+    </a>
+
+</div>
+
 
 
             <hr>
@@ -147,15 +159,15 @@ border-radius:10px;">
             <!-- Official Link -->
 
 <h3 class="font-weight-bold mb-3">
-    Official Company Application
+    Apply Now
 </h3>
 
             
 <span class="badge badge-light border text-dark mb-3 p-2">
-    ✓ Verified Official Link
+    ✓ Official Company Career Portal
 </span>
 
-            <div style="
+            <!-- <div style="
                     background:#f8f9fa;
                     border:1px solid #c2cdd8;
                     border-radius:10px;
@@ -168,8 +180,10 @@ border-radius:10px;">
 
                 </a>
 
-            </div>
-
+            </div> -->
+<p class="text-muted mb-3">
+    Apply directly through the company's official careers portal.
+</p>
             <div class="mt-4">
 
 <a href="{{ job.apply_link }}"
@@ -181,7 +195,7 @@ border-radius:10px;">
 
 </a>
 
-<div class="text-center mt-3">
+<!-- <div class="text-center mt-3">
 
     <a href="{{ url_for('add_to_career_list', job_id=job.id) }}"
        class="btn btn-outline-dark btn-lg px-5"
@@ -191,7 +205,7 @@ border-radius:10px;">
 
     </a>
 
-</div>
+</div> -->
 
 <div class="modal fade"
      id="applyModal"
