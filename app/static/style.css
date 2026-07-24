@@ -214,3 +214,31 @@ body{
         font-size:.95rem;
     }
 }
+
+.admin-container{
+    max-width: 1700px;   /* Controls overall dashboard width */
+    margin: 0 auto;      /* Centers the dashboard */
+    padding-left: 240px;  /* Left gap */
+    padding-right: 240px; /* Right gap */
+}
+
+@media (max-width:1200px){
+    .admin-container{
+        padding-left:50px;
+        padding-right:50px;
+    }
+}
+
+@media (max-width:992px){
+    .admin-container{
+        padding-left:25px;
+        padding-right:25px;
+    }
+}
+
+@media (max-width:576px){
+    .admin-container{
+        padding-left:15px;
+        padding-right:15px;
+    }
+}
