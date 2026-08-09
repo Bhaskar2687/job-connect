@@ -1,250 +1,479 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class="container-fluid">
-    <div style="max-width:1400px; margin:0 auto; padding:0 120px;">
+<style>
+    /* =========================
+       ADMIN DASHBOARD
+       ========================= */
 
-<div class="row justify-content-center mt-5 mb-5">
-    <div class="col-lg-8 text-center">
+    .admin-page {
+        background: #f5f7fa;
+        min-height: 100vh;
+        padding: 0 0 40px;
+    }
 
-        <h1 class="font-weight-bold text-dark mb-2"
-            style="font-size:48px;">
-            Admin Dashboard
-        <!-- </h1> --> 
+    .admin-shell {
+        width: calc(100% - 140px);
+        max-width: 1300px;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
 
-    </div>
-</div> 
-<!-- Statistics Cards -->
-<div class="row mb-5">
+    /* Fix Bootstrap row stretching */
+    .admin-shell > .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .admin-shell > .row > [class*="col-"] {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 
-    <div class="col-md-4 mb-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
-                <div class="mb-2">
-                    <i class="fas fa-briefcase fa-2x text-dark"></i>
-                </div>
-                <h3 class="font-weight-bold mb-1">{{ total_jobs }}</h3>
-                <p class="text-muted mb-0">Total Jobs</p>
+    /* Dashboard heading */
+    .admin-title-row {
+        padding-top: 28px;
+        margin-bottom: 28px !important;
+    }
+
+    .admin-title {
+        font-size: 46px;
+        line-height: 1.15;
+        margin: 0;
+    }
+
+    /* Statistics */
+    .admin-stat-row {
+        margin-bottom: 18px !important;
+    }
+
+    .admin-stat-card {
+        border-radius: 10px;
+        min-height: 135px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .admin-stat-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .admin-stat-card .card-body {
+        padding: 24px 20px;
+    }
+
+    .admin-stat-card i {
+        margin-bottom: 6px;
+    }
+
+    .admin-stat-card h3 {
+        font-size: 28px;
+    }
+
+    /* Quick Actions */
+    .admin-quick-card {
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 18px !important;
+    }
+
+    .admin-quick-card .card-header {
+        padding: 16px 22px;
+    }
+
+    .admin-quick-card .card-body {
+        padding: 22px;
+    }
+
+    .admin-quick-actions {
+        margin-left: -7px;
+        margin-right: -7px;
+    }
+
+    .admin-quick-actions > div {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+    .admin-quick-actions .btn {
+        min-height: 58px;
+        border-radius: 7px;
+        font-weight: 500;
+    }
+
+    /* Latest information */
+    .admin-activity-card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .admin-activity-card .card-header {
+        padding: 15px 22px;
+    }
+
+    .admin-activity-card .list-group-item {
+        padding: 14px 22px;
+        min-height: 50px;
+    }
+
+    /* Logout */
+    .admin-logout {
+        border-radius: 8px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+
+    /* Tablet */
+    @media (max-width: 991.98px) {
+        .admin-shell {
+            max-width: 900px;
+            padding: 0 18px;
+        }
+
+        .admin-title {
+            font-size: 40px;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 767.98px) {
+        .admin-shell {
+            padding: 0 14px;
+        }
+
+        .admin-title-row {
+            padding-top: 22px;
+            margin-bottom: 22px !important;
+        }
+
+        .admin-title {
+            font-size: 32px;
+        }
+
+        .admin-stat-row {
+            margin-bottom: 14px !important;
+        }
+
+        .admin-stat-card {
+            min-height: 125px;
+        }
+
+        .admin-quick-card {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: 10px !important;
+            margin-right: 10px !important;
+            margin-bottom: 18px !important;
+        }
+
+        .admin-quick-card .card-body {
+            padding: 16px;
+        }
+
+        .admin-quick-actions {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .admin-quick-actions > div {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .admin-quick-actions .btn {
+            min-height: 54px;
+        }
+
+        .admin-activity-card .list-group-item {
+            padding: 13px 16px;
+        }
+    }
+</style>
+
+<div class="admin-page">
+    <div class="admin-shell">
+
+        <!-- =========================
+             DASHBOARD HEADING
+             ========================= -->
+        <div class="row justify-content-center admin-title-row">
+            <div class="col-12 text-center">
+                <h1 class="font-weight-bold text-dark admin-title">
+                    Admin Dashboard
+                </h1>
             </div>
         </div>
-    </div> 
 
-     <div class="col-md-4 mb-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
-                <div class="mb-2">
-                    <i class="fas fa-users fa-2x text-dark"></i>
+
+        <!-- =========================
+             STATISTICS CARDS
+             ========================= -->
+        <div class="row admin-stat-row">
+
+            <!-- Total Jobs -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100 admin-stat-card">
+                    <div class="card-body text-center">
+
+                        <div>
+                            <i class="fas fa-briefcase fa-2x text-dark"></i>
+                        </div>
+
+                        <h3 class="font-weight-bold mb-1">
+                            {{ total_jobs }}
+                        </h3>
+
+                        <p class="text-muted mb-0">
+                            Total Jobs
+                        </p>
+
+                    </div>
                 </div>
-                <h3 class="font-weight-bold mb-1">{{ total_users }}</h3>
-                <p class="text-muted mb-0">Total Users</p>
+            </div>
+
+
+            <!-- Total Users -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100 admin-stat-card">
+                    <div class="card-body text-center">
+
+                        <div>
+                            <i class="fas fa-users fa-2x text-dark"></i>
+                        </div>
+
+                        <h3 class="font-weight-bold mb-1">
+                            {{ total_users }}
+                        </h3>
+
+                        <p class="text-muted mb-0">
+                            Total Users
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Total Reviews -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100 admin-stat-card">
+                    <div class="card-body text-center">
+
+                        <div>
+                            <i class="fas fa-star fa-2x text-dark"></i>
+                        </div>
+
+                        <h3 class="font-weight-bold mb-1">
+                            {{ total_reviews }}
+                        </h3>
+
+                        <p class="text-muted mb-0">
+                            Total Reviews
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+<!-- =========================
+     QUICK ACTIONS
+     ========================= -->
+<div class="row admin-quick-row">
+    <div class="col-12">
+
+        <div class="card shadow-sm border-0 admin-quick-card">
+
+            <div class="card-header bg-white">
+                <h4 class="mb-0 font-weight-bold">
+                    Quick Actions
+                </h4>
+            </div>
+
+            <div class="card-body">
+                <div class="row admin-quick-actions">
+
+                    <!-- Add New Job -->
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <a href="{{ url_for('post_jobs') }}"
+                           class="btn btn-outline-dark btn-block py-3">
+
+                            <i class="fas fa-plus mr-2"></i>
+                            Add New Job
+
+                        </a>
+                    </div>
+
+
+                    <!-- View All Jobs -->
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <a href="{{ url_for('admin_jobs') }}"
+                           class="btn btn-outline-dark btn-block py-3">
+
+                            <i class="fas fa-list mr-2"></i>
+                            View All Jobs
+
+                        </a>
+                    </div>
+
+
+                    <!-- View All Users -->
+                    <div class="col-md-4">
+                        <a href="{{ url_for('admin_users') }}"
+                           class="btn btn-outline-dark btn-block py-3">
+
+                            <i class="fas fa-users mr-2"></i>
+                            View All Users
+
+                        </a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
-     </div> 
 
-    <div class="col-md-4 mb-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
-                <div class="mb-2">
-                    <i class="fas fa-star fa-2x text-dark"></i>
-                </div>
-                <h3 class="font-weight-bold mb-1">{{ total_reviews }}</h3>
-                <p class="text-muted mb-0">Total Reviews</p>
-            </div>
-        </div>
-    </div>
 
-</div> 
-
-<div class="card shadow-sm border-0 mb-5">
-    <div class="card-header bg-white">
-        <h4 class="mb-0 font-weight-bold">
-            Quick Actions
-        </h4>
-    </div>
-
-    <div class="card-body">
-
+        <!-- =========================
+             LATEST INFORMATION
+             ========================= -->
         <div class="row">
 
-            <div class="col-md-4 mb-3">
-                <a href="{{ url_for('post_jobs') }}"
-                   class="btn btn-outline-dark btn-block py-3">
-                    <i class="fas fa-plus mr-2"></i>
-                    Add New Job
-                </a>
+            <!-- Latest Jobs -->
+            <div class="col-lg-4 mb-4">
+
+                <div class="card border-0 shadow-sm h-100 admin-activity-card">
+
+                    <div class="card-header bg-white border-bottom">
+                        <h6 class="mb-0 font-weight-bold">
+                            Latest Jobs
+                        </h6>
+                    </div>
+
+                    <div class="card-body p-0">
+
+                        <ul class="list-group list-group-flush">
+
+                            {% for job in latest_jobs %}
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                                <span class="text-truncate mr-2">
+                                    {{ job.title }}
+                                </span>
+
+                                <small class="text-muted">
+                                    {{ job.date_posted.strftime('%d %b') }}
+                                </small>
+
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="col-md-4 mb-3">
-                <a href="{{ url_for('admin_jobs') }}"
-                   class="btn btn-outline-dark btn-block py-3">
-                    <i class="fas fa-list mr-2"></i>
-                    View All Jobs
-                </a>
+
+            <!-- Latest Users -->
+            <div class="col-lg-4 mb-4">
+
+                <div class="card border-0 shadow-sm h-100 admin-activity-card">
+
+                    <div class="card-header bg-white border-bottom">
+                        <h6 class="mb-0 font-weight-bold">
+                            Latest Users
+                        </h6>
+                    </div>
+
+                    <div class="card-body p-0">
+
+                        <ul class="list-group list-group-flush">
+
+                            {% for user in latest_users %}
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                                <span class="font-weight-medium text-truncate mr-2">
+                                    {{ user.username }}
+                                </span>
+
+                                <small class="text-muted text-uppercase">
+                                    {{ user.usertype }}
+                                </small>
+
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="col-md-4 mb-3">
-<a href="{{ url_for('admin_users') }}"
-   class="btn btn-outline-dark btn-lg btn-block">
-    <i class="fas fa-list"></i>
-    View All Users
-</a>
+
+            <!-- Latest User Emails -->
+            <div class="col-lg-4 mb-4">
+
+                <div class="card border-0 shadow-sm h-100 admin-activity-card">
+
+                    <div class="card-header bg-white border-bottom">
+                        <h6 class="mb-0 font-weight-bold">
+                            Latest User Emails
+                        </h6>
+                    </div>
+
+                    <div class="card-body p-0">
+
+                        <ul class="list-group list-group-flush">
+
+                            {% for user in latest_users %}
+
+                            <li class="list-group-item">
+
+                                <div class="text-truncate">
+                                    {{ user.email }}
+                                </div>
+
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
             </div>
+
+        </div>
+
+
+        <!-- =========================
+             LOGOUT
+             ========================= -->
+        <div class="text-center mt-3 mb-4">
+
+            <a href="{{ url_for('admin_logout') }}"
+               class="btn btn-outline-danger admin-logout">
+
+                <i class="fas fa-sign-out-alt mr-2"></i>
+                Logout
+
+            </a>
 
         </div>
 
     </div>
 </div>
 
-<!-- -- < User Details Table ></User> -->
-
-
-<!-- Dashboard Activity -->
-<div class="row">
-
-    <!-- -- Latest Jobs --> 
- <div class="col-lg-4 mb-4"> 
-
-        <div class="card border-0 shadow-sm h-100">
-
-            <div class="card-header bg-white border-bottom">
-                <h6 class="mb-0 font-weight-bold">Latest Jobs</h6>
-            </div>
-
-            <div class="card-body p-0"> 
-
-                 <ul class="list-group list-group-flush"> 
-
-             {% for job in latest_jobs %} 
-
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-
-                        <span class="text-truncate mr-2">
-                            {{ job.title }}
-                        </span>
-
-                        <small class="text-muted">
-                            {{ job.date_posted.strftime('%d %b') }}
-                        </small> 
-
-                 </li>
-
-                {% endfor %}
-
-                </ul>
-
-            </div>
-
-        </div>
-
-    </div> 
-
-    <!-- Latest Users -->
-     <div class="col-lg-4 mb-4">
-
-        <div class="card border-0 shadow-sm h-100">
-
-            <div class="card-header bg-white border-bottom"> 
-                 <h6 class="mb-0 font-weight-bold">Latest Users</h6>
-            </div>  
-
-            <div class="card-body p-0">
-
-                <ul class="list-group list-group-flush">
-
-                {% for user in latest_users %}
-
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-
-                        <span class="font-weight-medium text-truncate mr-2">
-                            {{ user.username }}
-                        </span>
-
-                        <small class="text-muted text-uppercase">
-                            {{ user.usertype }}
-                        </small> 
-
-                 </li>
-
-                {% endfor %}
-
-                </ul> 
-
-             </div>
-
-        </div>
-
-    </div> 
-
-    <!-- Latest User Emails -->
- <div class="col-lg-4 mb-4">
-
-        <div class="card border-0 shadow-sm h-100">
-
-            <div class="card-header bg-white border-bottom">
-                <h6 class="mb-0 font-weight-bold">Latest User Emails</h6>
-            </div>
-
-            <div class="card-body p-0"> 
-
-                 <ul class="list-group list-group-flush">
-
-                {% for user in latest_users %}
-
-                    <li class="list-group-item">
-
-                        <div class="text-truncate">
-                            {{ user.email }}
-                        </div> 
-
-                    </li>
-                
-
-                {% endfor %}
-
-    
-
-                </ul>
-
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-<div class="text-center mt-5 mb-4">
-
-    <a href="{{ url_for('admin_logout') }}"
-       class="btn btn-outline-danger px-5"
-       style="border-radius:10px;">
-
-        <i class="fas fa-sign-out-alt mr-2"></i>
-
-        Logout
-
-    </a>
-
-</div>
-
-
-</div>
-
-</div>
-{% endblock %} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+{% endblock %}
